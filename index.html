@@ -16,6 +16,18 @@
       border-color: #f8c6d5; /* 這是淺粉色 */
       box-shadow: 0 0 0 0.25rem rgba(248, 198, 213, 0.5); /* 添加淺粉色的外圍陰影 */
     }
+      .card {
+      border-radius: 15px; /* 圓角效果，讓卡片邊緣更柔和 */
+      border: 1px solid #f0f0f0; /* 淺灰色邊框 */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 加上輕微的陰影效果，讓卡片浮起來 */
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 加入平滑過渡效果 */
+    }
+
+    /* 鼠標懸停時卡片的效果 */
+    .card:hover {
+      transform: translateY(-10px); /* 鼠標懸停時，卡片向上移動 */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 更明顯的陰影，讓卡片看起來更加浮起 */
+    }
   </style>
 </head>
 <body>
