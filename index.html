@@ -70,100 +70,104 @@
         <a href="https://www.instagram.com/xii.03__?igsh=MWhwM2Y2Mm9sODd2bA%3D%3D&utm_source=qr" " target="_blank">Personal website</a><br>
 
       </p>
-<section id="projects" class="py-5 bg-light">
+<section id="projects" class="py-5" style="background: linear-gradient(135deg, #fdeef3, #f5f5f5);">
   <div class="container">
     <h2 class="text-center mb-5" style="font-size: 2rem;">作品集</h2>
-    <div class="row g-4">
-      
+    <div class="row g-4 justify-content-center">
+
+      <!-- 卡片樣式共用 CSS -->
+      <style>
+        .project-card {
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .project-card:hover {
+          transform: scale(1.03);
+          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+      </style>
+
       <!-- 作品 1 -->
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 rounded-4">
-          <img src="/images/6.png" class="card-img-top" alt="作品1圖片">
-          <div class="card-body">
-            <h5 class="card-title">作品 1 - Teachable Machine</h5>
-            <p><a href="https://teachablemachine.withgoogle.com/models/hP-DY5gqg/" target="_blank">點我查看模型</a></p>
-            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project1">查看詳細</button>
-            <div id="project1" class="collapse mt-2">
-              <p>此模型可用攝影鏡頭分辨 phone、boynextdoor light stick、bottle。</p>
+        <a href="https://teachablemachine.withgoogle.com/models/hP-DY5gqg/" target="_blank" class="text-decoration-none">
+          <div class="card border-0 shadow-sm rounded-4 h-100 project-card">
+            <img src="/images/6.png" class="card-img-top rounded-top-4" alt="Teachable Machine">
+            <div class="card-body text-center">
+              <h5 class="card-title text-dark">Teachable Machine</h5>
+              <p class="text-muted">AI 模型可辨識手機、光棒、水瓶</p>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       <!-- 作品 2 -->
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 rounded-4">
-          <img src="/images/your-image2.jpg" class="card-img-top" alt="作品2圖片">
-          <div class="card-body">
-            <h5 class="card-title">作品 2 - 小遊戲設計</h5>
-            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project2">查看詳細</button>
-            <div id="project2" class="collapse mt-2">
-              <p>使用 Scratch 製作的互動小遊戲，主題為「音樂方塊遊戲」。</p>
+        <a href="https://example.com/project2" target="_blank" class="text-decoration-none">
+          <div class="card border-0 shadow-sm rounded-4 h-100 project-card">
+            <img src="/images/2.png" class="card-img-top rounded-top-4" alt="互動遊戲設計">
+            <div class="card-body text-center">
+              <h5 class="card-title text-dark">互動遊戲設計</h5>
+              <p class="text-muted">用 Scratch 製作的敲打遊戲</p>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       <!-- 作品 3 -->
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 rounded-4">
-          <img src="/images/your-image3.jpg" class="card-img-top" alt="作品3圖片">
-          <div class="card-body">
-            <h5 class="card-title">作品 3 - Canva 社群海報</h5>
-            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project3">查看詳細</button>
-            <div id="project3" class="collapse mt-2">
-              <p>為社團設計活動宣傳圖，色彩協調與主視覺風格一致。</p>
+        <a href="https://example.com/project3" target="_blank" class="text-decoration-none">
+          <div class="card border-0 shadow-sm rounded-4 h-100 project-card">
+            <img src="/images/3.png" class="card-img-top rounded-top-4" alt="社群視覺設計">
+            <div class="card-body text-center">
+              <h5 class="card-title text-dark">社群視覺設計</h5>
+              <p class="text-muted">為社團設計的宣傳圖像</p>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       <!-- 作品 4 -->
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 rounded-4">
-          <img src="/images/your-image4.jpg" class="card-img-top" alt="作品4圖片">
-          <div class="card-body">
-            <h5 class="card-title">作品 4 - 學生指導作品</h5>
-            <p><a href="https://ixd.ntut.edu.tw/p/406-1089-129034,r1745.php?Lang=zh-tw" target="_blank">查看學生作品</a></p>
-            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project4">查看詳細</button>
-            <div id="project4" class="collapse mt-2">
-              <p>指導學生參與互動設計課程，作品入選校內展覽。</p>
+        <a href="https://example.com/project4" target="_blank" class="text-decoration-none">
+          <div class="card border-0 shadow-sm rounded-4 h-100 project-card">
+            <img src="/images/4.png" class="card-img-top rounded-top-4" alt="活動網站企劃">
+            <div class="card-body text-center">
+              <h5 class="card-title text-dark">活動網站企劃</h5>
+              <p class="text-muted">以 Figma 打造完整活動頁面</p>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       <!-- 作品 5 -->
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 rounded-4">
-          <img src="/images/your-image5.jpg" class="card-img-top" alt="作品5圖片">
-          <div class="card-body">
-            <h5 class="card-title">作品 5 - PowerPoint 專案簡報</h5>
-            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project5">查看詳細</button>
-            <div id="project5" class="collapse mt-2">
-              <p>以清晰的結構與視覺設計，完成創業企劃簡報。</p>
+        <a href="https://example.com/project5" target="_blank" class="text-decoration-none">
+          <div class="card border-0 shadow-sm rounded-4 h-100 project-card">
+            <img src="/images/5.png" class="card-img-top rounded-top-4" alt="學生指導成果">
+            <div class="card-body text-center">
+              <h5 class="card-title text-dark">學生指導成果</h5>
+              <p class="text-muted">協助學生完成專題發表</p>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       <!-- 作品 6 -->
       <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 rounded-4">
-          <img src="/images/your-image6.jpg" class="card-img-top" alt="作品6圖片">
-          <div class="card-body">
-            <h5 class="card-title">作品 6 - Figma UI/UX 練習</h5>
-            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project6">查看詳細</button>
-            <div id="project6" class="collapse mt-2">
-              <p>模擬設計手機 App 的 UI 介面，注重使用者流程與視覺一致性。</p>
+        <a href="https://example.com/project6" target="_blank" class="text-decoration-none">
+          <div class="card border-0 shadow-sm rounded-4 h-100 project-card">
+            <img src="/images/6.png" class="card-img-top rounded-top-4" alt="行銷設計作品">
+            <div class="card-body text-center">
+              <h5 class="card-title text-dark">行銷設計作品</h5>
+              <p class="text-muted">品牌社群貼文製作</p>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
     </div>
   </div>
 </section>
+
 
 
 
