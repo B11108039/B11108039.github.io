@@ -28,6 +28,40 @@
       transform: translateY(-10px); /* 鼠標懸停時，卡片向上移動 */
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 更明顯的陰影，讓卡片看起來更加浮起 */
     }
+      .project-card {
+      transition: transform 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .project-img {
+      height: 200px;
+      position: relative;
+    }
+
+    .project-img img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+
+    .project-img .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 105, 135, 0.6); /* 淺粉遮罩 */
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 1rem 1rem 0 0;
+    }
+
+    .project-card:hover .overlay {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
