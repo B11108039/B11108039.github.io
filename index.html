@@ -54,9 +54,9 @@
 
   <main class="container mt-5">
     <section id="home" class="text-center py-5">
-  <img src="./images/profile.jpg" alt="個人照片" class="rounded-circle mb-3" style="width: 150px;">
+
   <h1>謝碧玲</h1>
-  <p>台灣科技大學 企業管理系學生，熱愛拍照、追星、追劇、聽音樂。</p>
+  <p>台灣科技大學 企業管理系</p>
 </section>
    <section id="about" class="section py-5">
   <h2 class="fs-4 fw-light">關於我</h2>
@@ -70,104 +70,97 @@
         <a href="https://www.instagram.com/xii.03__?igsh=MWhwM2Y2Mm9sODd2bA%3D%3D&utm_source=qr" " target="_blank">Personal website</a><br>
 
       </p>
-
-<section id="projects" class="section py-5 bg-light">
+<section id="projects" class="py-5 bg-light">
   <div class="container">
-    <h2 class="fs-4 fw-light">作品集</h2>
-
-
-    <div class="accordion" id="portfolioAccordion">
+    <h2 class="text-center mb-5" style="font-size: 2rem;">作品集</h2>
+    <div class="row g-4">
+      
       <!-- 作品 1 -->
-      <div class="accordion-item mb-3 shadow-sm">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-            作品 1 - Teachable Machine
-          </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#portfolioAccordion">
-          <div class="accordion-body">
-            <img src="/images/6.png" alt="teachable machine" class="img-fluid mb-3 rounded">
-            <p><a href="https://teachablemachine.withgoogle.com/models/hP-DY5gqg/" target="_blank" class="btn btn-outline-primary btn-sm">前往模型連結</a></p>
-            <p>此模型可以利用攝影鏡頭分辨 phone、boynextdoor light stick、bottle。</p>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
+          <img src="/images/6.png" class="card-img-top" alt="作品1圖片">
+          <div class="card-body">
+            <h5 class="card-title">作品 1 - Teachable Machine</h5>
+            <p><a href="https://teachablemachine.withgoogle.com/models/hP-DY5gqg/" target="_blank">點我查看模型</a></p>
+            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project1">查看詳細</button>
+            <div id="project1" class="collapse mt-2">
+              <p>此模型可用攝影鏡頭分辨 phone、boynextdoor light stick、bottle。</p>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 作品 2 -->
-      <div class="accordion-item mb-3 shadow-sm">
-        <h2 class="accordion-header" id="headingTwo">
-          <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-            作品 2 - Chatbot 聊天機器人設計
-          </button>
-        </h2>
-        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#portfolioAccordion">
-          <div class="accordion-body">
-            <p>設計一個以「校園導覽」為主題的聊天機器人，能夠回答常見問題並引導使用者到相關連結。</p>
-            <p>使用工具：Dialogflow、Google Sheet、LINE Messaging API。</p>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
+          <img src="/images/your-image2.jpg" class="card-img-top" alt="作品2圖片">
+          <div class="card-body">
+            <h5 class="card-title">作品 2 - 小遊戲設計</h5>
+            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project2">查看詳細</button>
+            <div id="project2" class="collapse mt-2">
+              <p>使用 Scratch 製作的互動小遊戲，主題為「音樂方塊遊戲」。</p>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 作品 3 -->
-      <div class="accordion-item mb-3 shadow-sm">
-        <h2 class="accordion-header" id="headingThree">
-          <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-            作品 3 - 行銷企劃書設計
-          </button>
-        </h2>
-        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#portfolioAccordion">
-          <div class="accordion-body">
-            <p>以「50元盲盒企劃」為主題設計完整的行銷計畫書，包含 4P 分析、受眾細分、營運流程等。</p>
-            <p>使用工具：Canva、Google Slides、Excel、問卷星。</p>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
+          <img src="/images/your-image3.jpg" class="card-img-top" alt="作品3圖片">
+          <div class="card-body">
+            <h5 class="card-title">作品 3 - Canva 社群海報</h5>
+            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project3">查看詳細</button>
+            <div id="project3" class="collapse mt-2">
+              <p>為社團設計活動宣傳圖，色彩協調與主視覺風格一致。</p>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 作品 4 -->
-      <div class="accordion-item mb-3 shadow-sm">
-        <h2 class="accordion-header" id="headingFour">
-          <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-            作品 4 - 記憶消除密室企劃
-          </button>
-        </h2>
-        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#portfolioAccordion">
-          <div class="accordion-body">
-            <p>設計一個結合「記憶消除」主題的沉浸式密室遊戲，整合情境、機關、角色與場景規劃。</p>
-            <p>包含角色分工、預算、推廣策略等完整提案。</p>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
+          <img src="/images/your-image4.jpg" class="card-img-top" alt="作品4圖片">
+          <div class="card-body">
+            <h5 class="card-title">作品 4 - 學生指導作品</h5>
+            <p><a href="https://ixd.ntut.edu.tw/p/406-1089-129034,r1745.php?Lang=zh-tw" target="_blank">查看學生作品</a></p>
+            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project4">查看詳細</button>
+            <div id="project4" class="collapse mt-2">
+              <p>指導學生參與互動設計課程，作品入選校內展覽。</p>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 作品 5 -->
-      <div class="accordion-item mb-3 shadow-sm">
-        <h2 class="accordion-header" id="headingFive">
-          <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-            作品 5 - 學生指導成果展示
-          </button>
-        </h2>
-        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#portfolioAccordion">
-          <div class="accordion-body">
-            <img src="attached_assets/截圖 2025-04-06 下午4.05.36.png" alt="Student Project" class="img-fluid mb-3 rounded">
-            <p><a href="https://ixd.ntut.edu.tw/p/406-1089-129034,r1745.php?Lang=zh-tw" target="_blank" class="btn btn-outline-success btn-sm">查看學生作品</a></p>
-            <p>曾指導學生進行互動設計專題製作，並協助其投稿至校級成果展。</p>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
+          <img src="/images/your-image5.jpg" class="card-img-top" alt="作品5圖片">
+          <div class="card-body">
+            <h5 class="card-title">作品 5 - PowerPoint 專案簡報</h5>
+            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project5">查看詳細</button>
+            <div id="project5" class="collapse mt-2">
+              <p>以清晰的結構與視覺設計，完成創業企劃簡報。</p>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 作品 6 -->
-      <div class="accordion-item mb-3 shadow-sm">
-        <h2 class="accordion-header" id="headingSix">
-          <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-            作品 6 - 創意料理設計：辣炒年糕與柳丁烏龍
-          </button>
-        </h2>
-        <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#portfolioAccordion">
-          <div class="accordion-body">
-            <p>以食物創意企劃為主題，設計兩款產品並搭配文宣、包裝與銷售策略。</p>
-            <p>使用工具：Canva、拍攝排版、實體試吃與行銷觀察紀錄。</p>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 rounded-4">
+          <img src="/images/your-image6.jpg" class="card-img-top" alt="作品6圖片">
+          <div class="card-body">
+            <h5 class="card-title">作品 6 - Figma UI/UX 練習</h5>
+            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#project6">查看詳細</button>
+            <div id="project6" class="collapse mt-2">
+              <p>模擬設計手機 App 的 UI 介面，注重使用者流程與視覺一致性。</p>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
