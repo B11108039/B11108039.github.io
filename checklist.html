@@ -1,128 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>臉部辨識系統</title>
+  <style>
+    :root {
+      --main-color: #9db5cc;
+      --dark-color: #2c3e50;
+      --light-bg: #e6e8eb;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--light-bg);
+      color: #333;
+    }
+    header {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    nav a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav {
+      margin-top: 0.5rem;
+    }
+    .hero {
+      background-color: var(--main-color);
+      color: white;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+    .hero h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      background-color: white;
+      color: var(--main-color);
+      padding: 0.7rem 1.5rem;
+      border-radius: 5px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #e0e0e0;
+    }
+    section {
+      padding: 2rem 1.5rem;
+      max-width: 1000px;
+      margin: auto;
+      background: white;
+      margin-top: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    h2 {
+      color: var(--dark-color);
+    }
+    ul {
+      padding-left: 1.2rem;
+    }
+    pre {
+      background-color: #eee;
+      padding: 1rem;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+      nav {
+        margin-top: 1rem;
+      }
+      .hero h2 {
+        font-size: 1.6rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        font-size: 15px;
+      }
+      .hero h2 {
+        font-size: 1.3rem;
+      }
+      .btn {
+        padding: 0.5rem 1rem;
+      }
+    }
+p {
+  line-height: 2;
+}
+.banner-image {
+display: block;
+  margin: 20px auto 0 auto;
+  width: 66%;
+  height: auto;
+  max-height: 330px; /* 或你想要的高度 */
+  object-fit: cover;
+}
+
+
+  </style>
 </head>
 <body>
 
-from flask import Flask, render_template, jsonify
-
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-@app.route('/demo', methods=['GET'])
-def demo():
-    # 這裡可以加入與 Teachable Machine 互動的功能
-    return jsonify(message="人臉辨識系統啟動，請進行掃描。")
-
-if __name__ == '__main__':
-    app.run(debug=True)
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FacePass：AI 人臉辨識購票與入場系統</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
   <header>
-    <h1>FacePass：AI 人臉辨識購票與入場系統</h1>
-    <p>創新解決方案，防止黃牛、提升入場效率</p>
+    <h1>演唱會臉部辨識系統</h1>
+    <nav>
+        <a href="index.html">首頁</a>
+      <a href="#intro">介紹</a>
+      <a href="#tech">技術</a>
+      <a href="#features">功能</a>
+      <a href="#demo">畫面</a>
+    </nav>
   </header>
 
+  <section class="hero">
+    <h2>用 AI 解決票券黃牛問題</h2>
+    <p>透過人臉辨識系統比對購票資料，有效防堵黃牛進場，提升現場驗票效率！</p>
+    <a class="btn" href="#demo">立即體驗</a>
+  </section>
+<img src="/images/8.png" class="banner-image" alt="AI Banner">
+
+
+
   <section id="intro">
-    <h2>專案介紹</h2>
-    <p>
-      本專案基於 Teachable Machine 技術，設計出一個智能的入場系統，讓用戶能夠在購票時註冊人臉，並於活動現場通過臉部掃描進行入場驗證。
-    </p>
+    <h2>📌 設計理念</h2>
+    <p>本系統結合人工智慧與臉部辨識技術，打造出一套高效且安全的票務驗證流程<br>
+        使用者在購票時上傳個人照片，系統即透過AI模型進行訓練，建立專屬的臉部特徵資料<br>
+        於活動現場，觀眾僅需面對鏡頭，系統便能即時比對並完成身份驗證，無需出示實體票券或手機<br>
+此機制提升入場效率，減少排隊時間，更有效防止票券轉售與身份冒用等問題，確保每位觀眾的權益</p>
+  </section>
+
+  <section id="tech">
+    <h2>🧠 使用技術</h2>
+    <ul>
+      <li><strong>Teachable Machine：</strong>訓練臉部模型</li><br>
+      <li><strong>Flask：</strong>Python 後端架構，負責辨識處理</li><br>
+      <li><strong>JavaScript：</strong>即時鏡頭串流</li><br>
+      <li><strong>HTML / CSS：</strong>負責前端展示與響應式設計</li>
+    </ul>
+  </section>
+
+  <section id="features">
+    <h2>🎯 功能特色</h2>
+    <ul>
+      <li>即時臉部辨識登入驗票</li><br>
+      <li>辨識失敗導向人工驗票</li><br>
+      <li>防止票券轉賣、身份冒用</li><br>
+      <li>簡易操作介面，高齡友善</li>
+    </ul>
   </section>
 
   <section id="demo">
-    <h2>Demo 展示</h2>
-    <button id="start-demo">開始 Demo</button>
-    <div id="demo-result"></div>
+    <h2>📷 操作畫面</h2>
+    <p>以下為系統執行畫面截圖：</p>
+    <img src="{{ url_for('static', filename='demo.png') }}" alt="Demo Screenshot" />
+    <p style="margin-top:1rem;">
+      👉 想看實際運作？<a href="#" class="btn">立即試用</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>📁 專案結構</h2>
+    <pre>
+app.py                # Flask 主程式
+/templates/index.html # 專案首頁（你現在看的這頁）
+/static/demo.png      # demo 截圖或影片可放這
+    </pre>
   </section>
 
   <footer>
-    <p>&copy; 2025 FacePass All rights reserved.</p>
+    &copy; 2025 謝碧玲｜演唱會臉部辨識系統
   </footer>
-
-  <script src="{{ url_for('static', filename='scripts.js') }}"></script>
-</body>
-</html>
-/* 重設一些基本樣式 */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
-  line-height: 1.6;
-}
-
-header {
-  background-color: #4CAF50;
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
-
-h1 {
-  font-size: 2.5em;
-}
-
-section {
-  margin: 20px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  color: #4CAF50;
-}
-
-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1.2em;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-footer {
-  text-align: center;
-  padding: 10px;
-  background-color: #333;
-  color: white;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-}
-document.getElementById('start-demo').addEventListener('click', function () {
-  fetch('/demo')
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('demo-result').innerHTML = `<p>${data.message}</p>`;
-    });
-});
 
 </body>
 </html>
