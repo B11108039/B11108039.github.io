@@ -1,81 +1,63 @@
 from flask import Flask, request, render_template, jsonify
 import face_recognition
-import numpy as np
-import cv2
 import os
-from datetime import datetime
+from werkzeug.utils import secure_filename
+from PIL import Image
+import numpy as np
 
 app = Flask(__name__)
+UPLOAD_FOLDER = 'static/rare'
+KNOWN_FOLDER = 'known_faces'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# ======== 臉部資料載入區 ========
-known_face_encodings = []
-known_face_names = []
+# 載入所有已知人臉資料
+def load_known_faces():
+    known_encodings = []
+    known_names = []
+    for filename in os.listdir(KNOWN_FOLDER):
+        path = os.path.join(KNOWN_FOLDER, filename)
+        pil_image = Image.open(path).convert('RGB')
+        image = np.array(pil_image)
+        encodings = face_recognition.face_encodings(image)
+        if encodings:
+            known_encodings.append(encodings[0])
+            known_names.append(os.path.splitext(filename)[0])
+    return known_encodings, known_names
 
-for filename in os.listdir("known_faces"):
-    image = face_recognition.load_image_file(f"known_faces/{filename}")
-    encodings = face_recognition.face_encodings(image)
-    if encodings:
-        known_face_encodings.append(encodings[0])
-        known_face_names.append(os.path.splitext(filename)[0])
+known_encodings, known_names = load_known_faces()
 
-
-# ======== 轉換圖片格式函式 ========
-def convert_image_to_rgb(file):
-    try:
-        file_bytes = np.frombuffer(file.read(), np.uint8)
-        img_bgr = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-        img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-        return img_rgb
-    except Exception as e:
-        print("圖片轉換錯誤：", e)
-        return None
-
-
-# ======== 首頁路由 ========
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index3.html')
 
-
-# ======== 上傳辨識路由 ========
-@app.route('/verify', methods=['POST'])
+@app.route('/rare', methods=['POST'])
 def verify():
-    if 'image' not in request.files:
-        return jsonify({'success': False, 'message': '沒有上傳圖片'})
+    if 'photo' not in request.files:
+        return jsonify({'result': '沒有圖片'}), 400
 
-    file = request.files['image']
+    file = request.files['photo']
     if file.filename == '':
-        return jsonify({'success': False, 'message': '未選擇檔案'})
+        return jsonify({'result': '檔案名稱為空'}), 400
 
-    # 將圖片轉為 RGB 格式
-    img = convert_image_to_rgb(file)
-    if img is None:
-        return jsonify({'success': False, 'message': '圖片格式錯誤，請使用 JPG 或 PNG'})
+    filename = secure_filename(file.filename)
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    file.save(filepath)
 
-    # 辨識臉部
-    face_locations = face_recognition.face_locations(img)
-    face_encodings = face_recognition.face_encodings(img, face_locations)
+    # 用 PIL 讀取並轉 RGB，再轉 numpy 陣列
+    pil_image = Image.open(filepath).convert('RGB')
+    image = np.array(pil_image)
 
-    if not face_encodings:
-        return jsonify({'success': False, 'message': '圖片中未偵測到人臉'})
+    encodings = face_recognition.face_encodings(image)
+    if not encodings:
+        return render_template('result.html', result='驗票失敗（無法辨識人臉）')
 
-    for face_encoding in face_encodings:
-        matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-        face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+    uploaded_encoding = encodings[0]
+    results = face_recognition.compare_faces(known_encodings, uploaded_encoding, tolerance=0.5)
+    if True in results:
+        matched_name = known_names[results.index(True)]
+        return render_template('result.html', result=f'驗票成功：{matched_name}')
+    else:
+        return render_template('result.html', result='驗票失敗（查無此人）')
 
-        best_match_index = np.argmin(face_distances)
-        if matches[best_match_index]:
-            name = known_face_names[best_match_index]
-            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            return jsonify({
-                'success': True,
-                'name': name,
-                'time': timestamp
-            })
-
-    return jsonify({'success': False, 'message': '未比對到任何註冊人臉'})
-
-
-# ======== 執行伺服器 ========
 if __name__ == '__main__':
     app.run(debug=True)

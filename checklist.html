@@ -138,13 +138,12 @@ display: block;
   object-fit: cover;
 }
 
-
   </style>
 </head>
 <body>
 
   <header>
-    <h1>演唱會臉部辨識系統</h1>
+    <h1>Starlight Touch</h1>
     <nav>
         <a href="index.html">首頁</a>
       <a href="#intro">介紹</a>
@@ -155,9 +154,11 @@ display: block;
   </header>
 
   <section class="hero">
-    <h2>用 AI 解決票券黃牛問題</h2>
-    <p>透過人臉辨識系統比對購票資料，有效防堵黃牛進場，提升現場驗票效率！</p>
-    <a class="btn" href="#demo">立即體驗</a>
+    <h2>Starlight Touch－心動召喚機</h2>
+    <p>大家都愛收集偶像小卡，常常心癢想買更多！<br>
+      「Starlight Touch」讓你用手勢互動，輕鬆召喚偶像祝福和驚喜彩蛋
+      <br>滿足你想收藏的渴望，帶來全新的趣味體驗</p>
+    <a class="btn" href="kpop_card_project/templates/index2.html">立即體驗</a>
   </section>
 <img src="/images/8.png" class="banner-image" alt="AI Banner">
 
@@ -165,29 +166,30 @@ display: block;
 
   <section id="intro">
     <h2>📌 設計理念</h2>
-    <p>本系統結合人工智慧與臉部辨識技術，打造出一套高效且安全的票務驗證流程<br>
-        使用者在購票時上傳個人照片，系統即透過AI模型進行訓練，建立專屬的臉部特徵資料<br>
-        於活動現場，觀眾僅需面對鏡頭，系統便能即時比對並完成身份驗證，無需出示實體票券或手機<br>
-此機制提升入場效率，減少排隊時間，更有效防止票券轉售與身份冒用等問題，確保每位觀眾的權益</p>
+    <p>將偶像與粉絲的互動從單向觀看升級成雙向交流的沉浸式體驗<br>
+      透過直覺且充滿趣味的手勢操作，讓每一位粉絲彷彿能「召喚」偶像的祝福與神秘彩蛋<br>
+      打造專屬於你的互動小型展演<br>
+      結合視覺特效、音效與動畫，讓愛的能量從螢幕中閃耀出來，連結你與偶像的心</p>
   </section>
 
   <section id="tech">
     <h2>🧠 使用技術</h2>
     <ul>
-      <li><strong>Teachable Machine：</strong>訓練臉部模型</li><br>
+      <li><strong>MediaPipe Hands：</strong>手勢偵測引擎</li><br>
       <li><strong>Flask：</strong>Python 後端架構，負責辨識處理</li><br>
-      <li><strong>JavaScript：</strong>即時鏡頭串流</li><br>
-      <li><strong>HTML / CSS：</strong>負責前端展示與響應式設計</li>
+      <li><strong>JavaScript：</strong>判斷當前手勢並觸發對應功能</li><br>
+      <li><strong>HTML / CSS：</strong>負責前端展示與響應式設計</li><br>
+      <li><strong>localStorage：</strong>實現收藏功能，記錄你的最愛小卡</li>
     </ul>
   </section>
 
   <section id="features">
     <h2>🎯 功能特色</h2>
     <ul>
-      <li>即時臉部辨識登入驗票</li><br>
-      <li>辨識失敗導向人工驗票</li><br>
-      <li>防止票券轉賣、身份冒用</li><br>
-      <li>簡易操作介面，高齡友善</li>
+      <li>多元手勢互動--觸發專屬炫酷特效與驚喜彩蛋</li><br>
+      <li>神秘語錄解鎖--解鎖偶像的神秘話語</li><br>
+      <li>音樂播放--打造專屬音效氛圍</li><br>
+      <li>小卡隨機切換--隨機切換不同風格的小卡組合，驚喜不斷</li>
     </ul>
   </section>
 
@@ -196,7 +198,7 @@ display: block;
     <p>以下為系統執行畫面截圖：</p>
     <img src="{{ url_for('static', filename='demo.png') }}" alt="Demo Screenshot" />
     <p style="margin-top:1rem;">
-      👉 想看實際運作？<a href="#" class="btn">立即試用</a>
+      👉你也想試試看？<a href="kpop_card_project/templates/index2.html" class="btn">召喚你的心動吧</a>
     </p>
   </section>
 

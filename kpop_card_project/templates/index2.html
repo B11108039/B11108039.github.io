@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starlight Touch - 泥今天也手癢了嗎</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      background: linear-gradient(to right, #ebf1ff, #c1d2f7);
+      color: #333;
+      text-align: center;
+    }
+    header {
+      background-color: #41537a;
+      color: white;
+      padding: 1rem;
+      font-size: 1.8rem;
+    }
+    #card-container {
+      margin-top: 2rem;
+    }
+    #idol-card {
+      width: 300px;
+      height: 400px;
+      margin: auto;
+      border: 8px solid white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+      background-size: cover;
+      background-position: center;
+      transition: background-image 0.3s ease-in-out;
+    }
+    #idol-caption {
+      margin-top: 1rem;
+      font-size: 1.3rem;
+      color: #0288d1;
+      font-weight: bold;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      background-color: #41537a;
+      color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #6a7fad;
+    }
+    #videoCanvas {
+      display: none;
+    }
+     body {
+    font-family: "標楷體", "DFKai-SB", serif;
+  }
+  </style>
+</head>
+<body>
+
+  <header>🌟 Starlight Touch－心動召喚機 🌟</header>
+
+  <div id="card-container">
+    <div id="idol-card" style="background-image: url('/static/cards/normal/讚1.jpeg');"></div>
+    <div id="idol-caption">你今天想抽到誰！</div>
+    <button onclick="nextCard()">✨ 點我召喚小卡 ✨</button>
+  </div>
+
+  <video id="webcam" autoplay playsinline width="640" height="480" style="display:none;"></video>
+  <canvas id="videoCanvas" width="640" height="480"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.min.js"></script>
+
+  <script>
+    const cardData = [
+      { image: '/kpop_card_project/static/cards/normal/讚1.jpeg', caption: '跟著碩咪笑一個！' },
+      { image: '/kpop_card_project/static/cards/normal/讚2.jpeg', caption: '今天也要開心唷！' },
+      { image: '/kpop_card_project/static/cards/normal/讚3.jpeg', caption: 'Keep shining, my star！' },
+      { image: '/kpop_card_project/static/cards/normal/讚4.jpeg', caption: '笑一個叭！' },
+      { image: '/kpop_card_project/static/cards/normal/讚5.jpeg', caption: '跟著小鶴笑一個！' },
+      { image: '/kpop_card_project/static/cards/rare/愛心1.jpeg', caption: '甜甜圈送上🍩！' },
+      { image: '/kpop_card_project/static/cards/rare/愛心2.jpeg', caption: '愛心傳送 寶包接！' },
+      { image: '/kpop_card_project/static/cards/rare/愛心3.jpeg', caption: '心心相印不分離！' },
+      { image: '/kpop_card_project/static/cards/rare/愛心4.jpeg', caption: '你是我的小幸運🍀！' },
+      { image: '/kpop_card_project/static/cards/rare/愛心5.jpeg', caption: '跟我一起閃閃發光💎' },
+      { image: '/kpop_card_project/static/cards/rare/愛心6.jpeg', caption: '你們是我的超級英雄🦸‍♂️' },
+      { image: '/kpop_card_project/static/cards/ultra_rare/耶1.jpeg', caption: '跟我一起閃閃發光💎' },
+      { image: '/kpop_card_project/static/cards/ultra_rare/耶2.jpeg', caption: '你是我的開心果🍉' },
+      { image: '/kpop_card_project/static/cards/ultra_rare/耶3.jpeg', caption: '今天也一起加油吧💖' },
+      { image: '/kpop_card_project/static/cards/ultra_rare/耶4.jpeg', caption: '有你真好～～💌' },
+      { image: '/kpop_card_project/static/cards/ultra_rare/耶5.jpeg', caption: '你是我最甜的糖🍬' },
+       { image: '/kpop_card_project/static/cards/ultra_rare/耶6.jpeg', caption: '小狗來嚕！' },
+        { image: '/kpop_card_project/static/cards/ultra_rare/耶7.jpeg', caption: '你是我的星星⭐' }
+
+    ];
+
+    let currentIndex = 0;
+    let lastTriggerTime = 0;
+
+    function showCard(index) {
+      const card = cardData[index];
+      document.getElementById('idol-card').style.backgroundImage = `url('${card.image}')`;
+      document.getElementById('idol-caption').innerText = card.caption;
+    }
+
+    function nextCard() {
+      currentIndex = (currentIndex + 1) % cardData.length;
+      showCard(currentIndex);
+    }
+
+    function isGestureCooldownPassed() {
+      const now = Date.now();
+      if (now - lastTriggerTime > 2000) {
+        lastTriggerTime = now;
+        return true;
+      }
+      return false;
+    }
+
+    const videoElement = document.getElementById('webcam');
+    const canvasElement = document.getElementById('videoCanvas');
+    const canvasCtx = canvasElement.getContext('2d');
+
+    const hands = new Hands({
+      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+    });
+
+    hands.setOptions({
+      maxNumHands: 1,
+      modelComplexity: 1,
+      minDetectionConfidence: 0.7,
+      minTrackingConfidence: 0.7
+    });
+
+    hands.onResults((results) => {
+      if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+        const landmarks = results.multiHandLandmarks[0];
+        const thumbTip = landmarks[4];
+        const indexTip = landmarks[8];
+
+        const dx = indexTip.x - thumbTip.x;
+        const dy = indexTip.y - thumbTip.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 0.05 && isGestureCooldownPassed()) {
+          nextCard();
+        }
+      }
+    });
+
+    const camera = new Camera(videoElement, {
+      onFrame: async () => {
+        await hands.send({ image: videoElement });
+      },
+      width: 640,
+      height: 480
+    });
+
+    camera.start();
+
+  </script>
+</body>
+</html>
