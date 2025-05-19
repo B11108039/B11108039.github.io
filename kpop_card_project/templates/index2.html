@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Starlight Touch - 泥今天也手癢了嗎</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Starlight Touch - 心動召喚機</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: "標楷體", "DFKai-SB", Arial, sans-serif;
       margin: 0;
       background: linear-gradient(to right, #ebf1ff, #c1d2f7);
       color: #333;
@@ -20,15 +20,14 @@
     }
     #card-container {
       margin-top: 2rem;
-    }
-    #idol-card {
       width: 300px;
       height: 400px;
-      margin: auto;
+      margin-left: auto;
+      margin-right: auto;
       border: 8px solid white;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
       background-size: cover;
       background-position: center;
       transition: background-image 0.3s ease-in-out;
@@ -36,8 +35,9 @@
     #idol-caption {
       margin-top: 1rem;
       font-size: 1.3rem;
-      color: #0288d1;
+      color: #5a70bf;
       font-weight: bold;
+      min-height: 2em;
     }
     button {
       margin-top: 1.5rem;
@@ -47,125 +47,327 @@
       background-color: #41537a;
       color: white;
       border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
       cursor: pointer;
       transition: background-color 0.2s;
     }
     button:hover {
       background-color: #6a7fad;
     }
+    #webcam {
+      display: none;
+    }
     #videoCanvas {
       display: none;
     }
-     body {
-    font-family: "標楷體", "DFKai-SB", serif;
-  }
+     #collection-container {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .card-thumb {
+      width: 80px;
+      height: 100px;
+      border: 2px solid #41537a;
+      border-radius: 10px;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .card-thumb:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
 
-  <header>🌟 Starlight Touch－心動召喚機 🌟</header>
+<header>🌟 Starlight Touch－心動召喚機 🌟</header>
+<div id="collection-section" class="mt-8">
+<a href="collection.html" onclick="showCollection()">
+  <button>打開我的收集冊</button>
+</a>
 
-  <div id="card-container">
-    <div id="idol-card" style="background-image: url('/static/cards/normal/讚1.jpeg');"></div>
-    <div id="idol-caption">你今天想抽到誰！</div>
-    <button onclick="nextCard()">✨ 點我召喚小卡 ✨</button>
-  </div>
+<div id="collection-container" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+<div id="card-container" style="background-image: url('/static/cards/normal/讚1.jpeg');"></div>
+<div id="idol-caption">你今天想抽到誰！</div>
+<button id="summon-btn">✨ 點我召喚小卡 ✨</button>
 
-  <video id="webcam" autoplay playsinline width="640" height="480" style="display:none;"></video>
-  <canvas id="videoCanvas" width="640" height="480"></canvas>
+<video id="webcam" autoplay playsinline width="640" height="480"></video>
+<canvas id="videoCanvas" width="640" height="480"></canvas>
 
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.min.js"></script>
+<audio id="sound" preload="auto"></audio>
 
-  <script>
-    const cardData = [
-      { image: '/kpop_card_project/static/cards/normal/讚1.jpeg', caption: '跟著碩咪笑一個！' },
-      { image: '/kpop_card_project/static/cards/normal/讚2.jpeg', caption: '今天也要開心唷！' },
-      { image: '/kpop_card_project/static/cards/normal/讚3.jpeg', caption: 'Keep shining, my star！' },
-      { image: '/kpop_card_project/static/cards/normal/讚4.jpeg', caption: '笑一個叭！' },
-      { image: '/kpop_card_project/static/cards/normal/讚5.jpeg', caption: '跟著小鶴笑一個！' },
-      { image: '/kpop_card_project/static/cards/rare/愛心1.jpeg', caption: '甜甜圈送上🍩！' },
-      { image: '/kpop_card_project/static/cards/rare/愛心2.jpeg', caption: '愛心傳送 寶包接！' },
-      { image: '/kpop_card_project/static/cards/rare/愛心3.jpeg', caption: '心心相印不分離！' },
-      { image: '/kpop_card_project/static/cards/rare/愛心4.jpeg', caption: '你是我的小幸運🍀！' },
-      { image: '/kpop_card_project/static/cards/rare/愛心5.jpeg', caption: '跟我一起閃閃發光💎' },
-      { image: '/kpop_card_project/static/cards/rare/愛心6.jpeg', caption: '你們是我的超級英雄🦸‍♂️' },
-      { image: '/kpop_card_project/static/cards/ultra_rare/耶1.jpeg', caption: '跟我一起閃閃發光💎' },
-      { image: '/kpop_card_project/static/cards/ultra_rare/耶2.jpeg', caption: '你是我的開心果🍉' },
-      { image: '/kpop_card_project/static/cards/ultra_rare/耶3.jpeg', caption: '今天也一起加油吧💖' },
-      { image: '/kpop_card_project/static/cards/ultra_rare/耶4.jpeg', caption: '有你真好～～💌' },
-      { image: '/kpop_card_project/static/cards/ultra_rare/耶5.jpeg', caption: '你是我最甜的糖🍬' },
-       { image: '/kpop_card_project/static/cards/ultra_rare/耶6.jpeg', caption: '小狗來嚕！' },
-        { image: '/kpop_card_project/static/cards/ultra_rare/耶7.jpeg', caption: '你是我的星星⭐' }
+<!-- MediaPipe Hands -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.min.js"></script>
 
-    ];
+<!-- Teachable Machine Image -->
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 
-    let currentIndex = 0;
-    let lastTriggerTime = 0;
+<script>
+  // 卡片資料
+  const cardData = {
+    normal: [
+      { image: '讚1.jpeg', caption: '跟著碩咪笑一個！' },
+      { image: '讚2.jpeg', caption: '今天也要開心唷！' },
+      { image: '讚3.jpeg', caption: 'Keep shining, my star！' },
+      { image: '讚4.jpeg', caption: '笑一個叭！' },
+      { image: '讚5.jpeg', caption: '跟著小鶴笑一個！' },
+    ],
+    rare: [
+      { image: '愛心1.jpeg', caption: '甜甜圈送上🍩！' },
+      { image: '愛心2.jpeg', caption: '愛心傳送 寶包接！' },
+      { image: '愛心3.jpeg', caption: '心心相印不分離！' },
+      { image: '愛心4.jpeg', caption: '你是我的小幸運🍀！' },
+      { image: '愛心5.jpeg', caption: '跟我一起閃閃發光💎' },
+      { image: '愛心6.jpeg', caption: '你們是我的超級英雄🦸‍♂️' },
+    ],
+    ultra_rare: [
+      { image: '耶1.jpeg', caption: '跟我一起閃閃發光💎' },
+      { image: '耶2.jpeg', caption: '你是我的開心果🍉' },
+      { image: '耶3.jpeg', caption: '今天也一起加油吧💖' },
+      { image: '耶4.jpeg', caption: '有你真好～～💌' },
+      { image: '耶5.jpeg', caption: '你是我最甜的糖🍬' },
+      { image: '耶6.jpeg', caption: '小狗來嚕！' },
+      { image: '耶7.jpeg', caption: '你是我的星星⭐' },
+    ]
+  };
 
-    function showCard(index) {
-      const card = cardData[index];
-      document.getElementById('idol-card').style.backgroundImage = `url('${card.image}')`;
-      document.getElementById('idol-caption').innerText = card.caption;
-    }
+  // 目前顯示類別卡片與索引
+  let currentCategory = 'normal';
+  let currentIndex = 0;
 
-    function nextCard() {
-      currentIndex = (currentIndex + 1) % cardData.length;
-      showCard(currentIndex);
-    }
+  // 顯示卡片函式
+  function showCard(category, index) {
+    const card = cardData[category][index];
+    const cardContainer = document.getElementById('card-container');
+    cardContainer.style.backgroundImage = `url('/kpop_card_project/static/cards/${category}/${card.image}')`;
 
-    function isGestureCooldownPassed() {
-      const now = Date.now();
-      if (now - lastTriggerTime > 2000) {
-        lastTriggerTime = now;
-        return true;
+    const caption = document.getElementById('idol-caption');
+    caption.innerText = card.caption;
+  }
+
+  // 隨機抽卡
+  function drawRandomCard(category) {
+    const list = cardData[category];
+    const index = Math.floor(Math.random() * list.length);
+    showCard(category, index);
+  }
+  // 播放音效，依類別動態切換音檔路徑
+  function playSound(category) {
+    const audio = document.getElementById('sound');
+    audio.pause();
+    audio.currentTime = 0;
+    // 確保音效路徑正確，依你目錄結構調整
+    audio.src = `/kpop_card_project/static/sounds/${category}.mp3`;
+    audio.play().catch(e => console.warn('音效播放失敗:', e));
+  }
+
+  // 打開收集冊（簡單示範）
+  function showCollection() {
+    const container = document.getElementById('collection-container');
+    container.style.display = container.style.display === 'none' ? 'flex' : 'none';
+    if (container.style.display === 'flex') {
+      container.innerHTML = '';
+      // 展示所有卡片縮圖
+      for (const category in cardData) {
+        cardData[category].forEach(card => {
+          const div = document.createElement('div');
+          div.className = 'card-thumb';
+          div.style.backgroundImage = `url('/kpop_card_project/static/cards/${category}/${card.image}')`;
+          div.title = card.caption;
+          div.onclick = () => {
+            showCard(category, cardData[category].indexOf(card));
+            playSound(category);
+          };
+          container.appendChild(div);
+        });
       }
-      return false;
     }
+  }
 
-    const videoElement = document.getElementById('webcam');
-    const canvasElement = document.getElementById('videoCanvas');
-    const canvasCtx = canvasElement.getContext('2d');
+  // 按鈕事件 - 換卡
+  document.getElementById('summon-btn').addEventListener('click', () => {
+  // 隨機選擇類別
+  const categories = ['normal', 'rare', 'ultra_rare'];
+  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+  drawRandomCard(randomCategory);
 
-    const hands = new Hands({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
-    });
+  // 播放對應音效（可以根據類別）
+  if (randomCategory === 'normal') {
+    playSound('normal.mp3');
+  } else if (randomCategory === 'rare') {
+    playSound('rare.mp3');
+  } else if (randomCategory === 'ultra_rare') {
+    playSound('ultra_rare.mp3');
+  }
+});
 
-    hands.setOptions({
-      maxNumHands: 1,
-      modelComplexity: 1,
-      minDetectionConfidence: 0.7,
-      minTrackingConfidence: 0.7
-    });
 
-    hands.onResults((results) => {
-      if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-        const landmarks = results.multiHandLandmarks[0];
-        const thumbTip = landmarks[4];
-        const indexTip = landmarks[8];
+  // MediaPipe Hands 初始化
+  const videoElement = document.getElementById('webcam');
+  const hands = new Hands({
+    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+  });
 
-        const dx = indexTip.x - thumbTip.x;
-        const dy = indexTip.y - thumbTip.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+  hands.setOptions({
+    maxNumHands: 1,
+    modelComplexity: 1,
+    minDetectionConfidence: 0.7,
+    minTrackingConfidence: 0.7
+  });
 
-        if (distance < 0.05 && isGestureCooldownPassed()) {
-          nextCard();
-        }
+  let lastTriggerTime = 0;
+  function isCooldownPassed() {
+    const now = Date.now();
+    if (now - lastTriggerTime > 2000) {
+      lastTriggerTime = now;
+      return true;
+    }
+    return false;
+  }
+
+  hands.onResults((results) => {
+  if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+    const landmarks = results.multiHandLandmarks[0];
+    const thumbTip = landmarks[4];
+    const indexTip = landmarks[8];
+
+    const dx = indexTip.x - thumbTip.x;
+    const dy = indexTip.y - thumbTip.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < 0.05 && isCooldownPassed()) {
+      // 隨機選擇一個類別
+      const categories = ['normal', 'rare', 'ultra_rare'];
+      const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+      drawRandomCard(randomCategory);
+
+      // 播放對應音效
+      if (randomCategory === 'normal') {
+        playSound('normal.mp3');
+      } else if (randomCategory === 'rare') {
+        playSound('rare.mp3');
+      } else if (randomCategory === 'ultra_rare') {
+        playSound('ultra_rare.mp3');
       }
-    });
+    }
+  }
+});
 
-    const camera = new Camera(videoElement, {
-      onFrame: async () => {
-        await hands.send({ image: videoElement });
-      },
-      width: 640,
-      height: 480
-    });
 
-    camera.start();
+  const camera = new Camera(videoElement, {
+    onFrame: async () => {
+      await hands.send({ image: videoElement });
+    },
+    width: 640,
+    height: 480
+  });
 
-  </script>
+  camera.start();
+
+  // Teachable Machine 初始化 (手勢辨識)
+  const URL = "https://teachablemachine.withgoogle.com/models/oVHbP_Zyv/"; // 換成你模型網址
+  let model, webcamTM, maxPredictions;
+
+  async function initTM() {
+  const modelURL = URL + "model.json";
+  const metadataURL = URL + "metadata.json";
+
+  model = await tmImage.load(modelURL, metadataURL);
+  webcamTM = new tmImage.Webcam(640, 480, true);
+  await webcamTM.setup();
+  await webcamTM.play();
+  document.body.appendChild(webcamTM.canvas);
+
+  maxPredictions = model.getTotalClasses();
+
+  // 初始化 MediaPipe Hands
+  hands = new Hands({
+    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+  });
+
+  hands.setOptions({
+    maxNumHands: 1,
+    modelComplexity: 1,
+    minDetectionConfidence: 0.7,
+    minTrackingConfidence: 0.7
+  });
+
+  hands.onResults(onHandsResults);
+
+  // 開始持續辨識
+  requestAnimationFrame(loop);
+}
+
+function onHandsResults(results) {
+  if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+    // OK 手勢判斷跟之前一樣
+    // ...
+  }
+}
+
+async function loop() {
+  webcamTM.update();
+  await predictTM();
+  await hands.send({ image: webcamTM.canvas });
+  requestAnimationFrame(loop);
+}
+
+
+  async function loopTM() {
+    webcamTM.update();
+    await predictTM();
+    window.requestAnimationFrame(loopTM);
+  }
+
+  let lastShown = { label: '', time: 0 };
+
+  async function predictTM() {
+  const prediction = await model.predict(webcamTM.canvas);
+  prediction.sort((a, b) => b.probability - a.probability);
+  const topPrediction = prediction[0];
+
+  console.log("預測結果:", topPrediction.className, topPrediction.probability);
+
+  if (topPrediction.probability > 0.7) {
+    if (Date.now() - lastShown.time > 2000 || lastShown.label !== topPrediction.className) {
+      lastShown.label = topPrediction.className;
+      lastShown.time = Date.now();
+
+      if (topPrediction.className === "Thumbs Up") {
+        drawRandomCard('normal');
+        playSound('normal.mp3');
+      } else if (topPrediction.className === "Heart") {
+        drawRandomCard('rare');
+        playSound('rare.mp3');
+      } else if (topPrediction.className === "Peace") {
+        drawRandomCard('ultra_rare');
+        playSound('ultra_rare.mp3');
+      }
+    }
+  }
+}
+
+
+  function playSound(filename) {
+    const audio = document.getElementById('sound');
+    audio.pause();
+    audio.currentTime = 0;
+    audio.src = '/kpop_card_project/static/sounds/normal.mp3';
+    audio.play();
+  }
+
+  // 初始化 Teachable Machine
+  initTM();
+
+  // 頁面載入時，顯示預設卡片
+  showCard('normal', 0);
+</script>
+
 </body>
 </html>

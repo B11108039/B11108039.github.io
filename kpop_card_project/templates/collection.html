@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Starlight Touch - 我的收集冊</title>
+  <style>
+    body {
+      font-family: "標楷體", "DFKai-SB", Arial, sans-serif;
+      background: linear-gradient(to right, #ebf1ff, #c1d2f7);
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 1rem;
+    }
+    header {
+      background-color: #41537a;
+      color: white;
+      padding: 1rem;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    #collection-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    .card {
+      width: 120px;
+      height: 160px;
+      border: 4px solid #41537a;
+      border-radius: 15px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      cursor: pointer;
+      position: relative;
+    }
+    .caption {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: rgba(65, 83, 122, 0.85);
+      color: white;
+      font-size: 0.9rem;
+      padding: 5px;
+      border-radius: 0 0 15px 15px;
+      box-sizing: border-box;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #back-btn {
+      margin-top: 20px;
+      padding: 0.6rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      background-color: #41537a;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+    }
+    #back-btn:hover {
+      background-color: #6a7fad;
+    }
+  </style>
+</head>
+<body>
+
+<header>🌟 Starlight Touch - 我的收集冊 🌟</header>
+<div id="collection-container">
+  <!-- 卡片會動態產生在這裡 -->
+</div>
+<a href="index2.html" onclick="showCollection()">
+  <button id="back-btn">返回主頁</button>
+</a>
+
+
+
+<script>
+  // 同主頁卡片資料
+  const cardData = {
+    normal: [
+      { image: '讚1.jpeg', caption: '跟著碩咪笑一個！' },
+      { image: '讚2.jpeg', caption: '今天也要開心唷！' },
+      { image: '讚3.jpeg', caption: 'Keep shining, my star！' },
+      { image: '讚4.jpeg', caption: '笑一個叭！' },
+      { image: '讚5.jpeg', caption: '跟著小鶴笑一個！' },
+],
+rare: [
+{ image: '愛心1.jpeg', caption: '甜甜圈送上🍩！' },
+{ image: '愛心2.jpeg', caption: '愛心傳送 寶包接！' },
+{ image: '愛心3.jpeg', caption: '心心相印不分離！' },
+{ image: '愛心4.jpeg', caption: '你是我的小幸運🍀！' },
+{ image: '愛心5.jpeg', caption: '跟我一起閃閃發光💎' },
+{ image: '愛心6.jpeg', caption: '你們是我的超級英雄🦸‍♂️' },
+],
+ultra_rare: [
+{ image: '耶1.jpeg', caption: '跟我一起閃閃發光💎' },
+{ image: '耶2.jpeg', caption: '你是我的開心果🍉' },
+{ image: '耶3.jpeg', caption: '今天也一起加油吧💖' },
+{ image: '耶4.jpeg', caption: '有你真好～～💌' },
+{ image: '耶5.jpeg', caption: '你是我最甜的糖🍬' },
+{ image: '耶6.jpeg', caption: '小狗來嚕！' },
+{ image: '耶7.jpeg', caption: '你是我的星星⭐' },
+]
+};
+
+// 讀取蒐集冊資料
+function loadCollection() {
+const container = document.getElementById('collection-container');
+let collection = JSON.parse(localStorage.getItem('starlight_collection')) || [];
+
+javascript
+Copy code
+if (collection.length === 0) {
+  container.innerText = '你還沒有抽到任何卡片喔！';
+  return;
+}
+
+collection.forEach(({ category, index }) => {
+  const card = cardData[category][index];
+  const cardDiv = document.createElement('div');
+  cardDiv.className = 'card';
+  cardDiv.style.backgroundImage = `url('/kpop_card_project/static/cards/${category}/${card.image}')`;
+  cardDiv.title = card.caption;
+
+  const captionDiv = document.createElement('div');
+  captionDiv.className = 'caption';
+  captionDiv.innerText = card.caption;
+
+  cardDiv.appendChild(captionDiv);
+  container.appendChild(cardDiv);
+});
+}
+
+// 返回主頁按鈕事件
+document.getElementById('back-btn').addEventListener('click', () => {
+window.location.href = 'index.html';
+});
+
+// 頁面載入時執行
+loadCollection();
+</script>
+
+</body> </html>
