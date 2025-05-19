@@ -74,14 +74,12 @@
 <div id="collection-container">
   <!-- 卡片會動態產生在這裡 -->
 </div>
-<a href="index2.html" onclick="showCollection()">
+<a href="index2.html">
   <button id="back-btn">返回主頁</button>
 </a>
 
-
-
 <script>
-  // 同主頁卡片資料
+  // 卡片資料
   const cardData = {
     normal: [
       { image: '讚1.jpeg', caption: '跟著碩咪笑一個！' },
@@ -89,61 +87,49 @@
       { image: '讚3.jpeg', caption: 'Keep shining, my star！' },
       { image: '讚4.jpeg', caption: '笑一個叭！' },
       { image: '讚5.jpeg', caption: '跟著小鶴笑一個！' },
-],
-rare: [
-{ image: '愛心1.jpeg', caption: '甜甜圈送上🍩！' },
-{ image: '愛心2.jpeg', caption: '愛心傳送 寶包接！' },
-{ image: '愛心3.jpeg', caption: '心心相印不分離！' },
-{ image: '愛心4.jpeg', caption: '你是我的小幸運🍀！' },
-{ image: '愛心5.jpeg', caption: '跟我一起閃閃發光💎' },
-{ image: '愛心6.jpeg', caption: '你們是我的超級英雄🦸‍♂️' },
-],
-ultra_rare: [
-{ image: '耶1.jpeg', caption: '跟我一起閃閃發光💎' },
-{ image: '耶2.jpeg', caption: '你是我的開心果🍉' },
-{ image: '耶3.jpeg', caption: '今天也一起加油吧💖' },
-{ image: '耶4.jpeg', caption: '有你真好～～💌' },
-{ image: '耶5.jpeg', caption: '你是我最甜的糖🍬' },
-{ image: '耶6.jpeg', caption: '小狗來嚕！' },
-{ image: '耶7.jpeg', caption: '你是我的星星⭐' },
-]
-};
+    ],
+    rare: [
+      { image: '愛心1.jpeg', caption: '甜甜圈送上🍩！' },
+      { image: '愛心2.jpeg', caption: '愛心傳送 寶包接！' },
+      { image: '愛心3.jpeg', caption: '心心相印不分離！' },
+      { image: '愛心4.jpeg', caption: '你是我的小幸運🍀！' },
+      { image: '愛心5.jpeg', caption: '跟我一起閃閃發光💎' },
+      { image: '愛心6.jpeg', caption: '你們是我的超級英雄🦸‍♂️' },
+    ],
+    ultra_rare: [
+      { image: '耶1.jpeg', caption: '跟我一起閃閃發光💎' },
+      { image: '耶2.jpeg', caption: '你是我的開心果🍉' },
+      { image: '耶3.jpeg', caption: '今天也一起加油吧💖' },
+      { image: '耶4.jpeg', caption: '有你真好～～💌' },
+      { image: '耶5.jpeg', caption: '你是我最甜的糖🍬' },
+      { image: '耶6.jpeg', caption: '小狗來嚕！' },
+      { image: '耶7.jpeg', caption: '你是我的星星⭐' },
+    ]
+  };
 
-// 讀取蒐集冊資料
-function loadCollection() {
-const container = document.getElementById('collection-container');
-let collection = JSON.parse(localStorage.getItem('starlight_collection')) || [];
+   function showCollection() {
+      const container = document.getElementById("collection-container");
+      container.innerHTML = "";
 
-javascript
-Copy code
-if (collection.length === 0) {
-  container.innerText = '你還沒有抽到任何卡片喔！';
-  return;
-}
+      const collection = JSON.parse(localStorage.getItem("cardCollection")) || [];
 
-collection.forEach(({ category, index }) => {
-  const card = cardData[category][index];
-  const cardDiv = document.createElement('div');
-  cardDiv.className = 'card';
-  cardDiv.style.backgroundImage = `url('/kpop_card_project/static/cards/${category}/${card.image}')`;
-  cardDiv.title = card.caption;
+      if (collection.length === 0) {
+        container.innerHTML = "<p>你還沒有抽到任何卡片喔～快去抽卡吧！</p>";
+        return;
+      }
 
-  const captionDiv = document.createElement('div');
-  captionDiv.className = 'caption';
-  captionDiv.innerText = card.caption;
+      collection.forEach(card => {
+        const thumb = document.createElement("div");
+        thumb.className = "card-thumb";
+        thumb.style.backgroundImage = `url('/static/cards/${card.rarity}/${card.image}')`;
+        thumb.title = card.caption;
+        container.appendChild(thumb);
+      });
+    }
 
-  cardDiv.appendChild(captionDiv);
-  container.appendChild(cardDiv);
-});
-}
-
-// 返回主頁按鈕事件
-document.getElementById('back-btn').addEventListener('click', () => {
-window.location.href = 'index.html';
-});
-
-// 頁面載入時執行
-loadCollection();
+    // 頁面載入時顯示收藏
+    window.onload = showCollection;
 </script>
 
-</body> </html>
+</body>
+</html>

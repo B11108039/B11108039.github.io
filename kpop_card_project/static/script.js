@@ -1,15 +1,20 @@
-const cards = [
+const cardData = {
+  normal: [
   { image: '/kpop_card_project/static/cards/normal/讚1.jpeg', caption: '卡片1！' },
   { image: '/kpop_card_project/static/cards/normal/讚2.jpeg', caption: '卡片2！' },
   { image: '/kpop_card_project/static/cards/normal/讚3.jpeg', caption: '卡片3！' },
   { image: '/kpop_card_project/static/cards/normal/讚4.jpeg', caption: '卡片4！' },
-  { image: '/kpop_card_project/static/cards/normal/讚5.jpeg', caption: '卡片5！' },
+  { image: '/kpop_card_project/static/cards/normal/讚5.jpeg', caption: '卡片5！' }
+  ],
+  rare: [
   { image: '/kpop_card_project/static/cards/rare/愛心1.jpeg', caption: '卡片6！' },
   { image: '/kpop_card_project/static/cards/rare/愛心2.jpeg', caption: '卡片7！' },
   { image: '/kpop_card_project/static/cards/rare/愛心3.jpeg', caption: '卡片8！' },
   { image: '/kpop_card_project/static/cards/rare/愛心4.jpeg', caption: '卡片9！' },
   { image: '/kpop_card_project/static/cards/rare/愛心5.jpeg', caption: '卡片10！' },
-  { image: '/kpop_card_project/static/cards/rare/愛心6.jpeg', caption: '卡片11！' },
+  { image: '/kpop_card_project/static/cards/rare/愛心6.jpeg', caption: '卡片11！' }
+  ],
+  ultra_rare: [
   { image: '/kpop_card_project/static/cards/ultra_rare/耶1.jpeg', caption: '卡片12！' },
   { image: '/kpop_card_project/static/cards/ultra_rare/耶2.jpeg', caption: '卡片13！' },
   { image: '/kpop_card_project/static/cards/ultra_rare/耶3.jpeg', caption: '卡片14！' },
@@ -19,49 +24,62 @@ const cards = [
   { image: '/kpop_card_project/static/cards/ultra_rare/耶7.jpeg', caption: '卡片18！' }
 ];
 
-// 已收集卡片清單：存 { category, index }
-const collectedCards = [];
+let collectedCards = JSON.parse(localStorage.getItem('starlight_collection')) || [];
 
-// 檢查卡片是否已存在收集冊
-function isCardCollected(category, index) {
-  return collectedCards.some(c => c.category === category && c.index === index);
+function isCardCollected(category, image) {
+  return collectedCards.some(c => c.category === category && c.image === image);
 }
+function saveToCollection(category, image, caption) {
+  const card = { category, image, caption };
+  let collection = JSON.parse(localStorage.getItem("starlight_collection")) || [];
+  collection.push(card);
+  localStorage.setItem("starlight_collection", JSON.stringify(collection));
+}
+saveToCollection("rare", "愛心3.jpeg", "心心相印不分離！");
 
-// 抽卡後更新收集冊
-function addCardToCollection(category, index) {
-  if (!isCardCollected(category, index)) {
-    collectedCards.push({ category, index });
+function addCardToCollection(category, image, caption) {
+  if (!isCardCollected(category, image)) {
+    collectedCards.push({ category, image, caption });
+    localStorage.setItem('starlight_collection', JSON.stringify(collectedCards));
   }
 }
 
-// 修改抽卡函式，加入收集冊更新
 function drawRandomCard(category) {
   const list = cardData[category];
-  const index = Math.floor(Math.random() * list.length);
-  showCard(category, index);
-  addCardToCollection(category, index);
+  const card = list[Math.floor(Math.random() * list.length)];
+  showCard(category, cardData[category].indexOf(card));
+
+  addCardToCollection(category, card.image, card.caption);
 }
 
-// 顯示收集冊卡片（只顯示已抽過的）
+
 function showCollection() {
   const container = document.getElementById('collection-container');
-  container.innerHTML = ''; // 清空
+  container.innerHTML = '';
 
   if (collectedCards.length === 0) {
     container.innerText = '你還沒有抽到任何卡片喔！';
     return;
   }
 
-  collectedCards.forEach(({ category, index }) => {
-    const card = cardData[category][index];
+  collectedCards.forEach(card => {
     const cardDiv = document.createElement('div');
     cardDiv.style.width = '100px';
     cardDiv.style.height = '130px';
-    cardDiv.style.backgroundImage = `url('/kpop_card_project/static/cards/${category}/${card.image}')`;
+    cardDiv.style.backgroundImage = `url('${card.image}')`;
     cardDiv.style.backgroundSize = 'cover';
     cardDiv.style.border = '3px solid #41537a';
     cardDiv.style.borderRadius = '10px';
     cardDiv.title = card.caption;
-    container.appendChild(cardDiv);
+
+    const img = document.createElement('img');
+    img.src = card.image;
+    img.alt = card.caption;
+    img.style.width = '100px';
+    img.style.height = '130px';
+    img.style.borderRadius = '10px';
+    img.style.border = '3px solid #41537a';
+
+    container.appendChild(img);
   });
 }

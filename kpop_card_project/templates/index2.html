@@ -60,40 +60,22 @@
     #videoCanvas {
       display: none;
     }
-     #collection-container {
-      margin-top: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-    }
-    .card-thumb {
-      width: 80px;
-      height: 100px;
-      border: 2px solid #41537a;
-      border-radius: 10px;
-      background-size: cover;
-      background-position: center;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .card-thumb:hover {
-      transform: scale(1.1);
-    }
   </style>
 </head>
 <body>
 
 <header>🌟 Starlight Touch－心動召喚機 🌟</header>
-<div id="collection-section" class="mt-8">
-<a href="collection.html" onclick="showCollection()">
-  <button>打開我的收集冊</button>
-</a>
 
-<div id="collection-container" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-<div id="card-container" style="background-image: url('/static/cards/normal/讚1.jpeg');"></div>
-<div id="idol-caption">你今天想抽到誰！</div>
-<button id="summon-btn">✨ 點我召喚小卡 ✨</button>
+<div id="collection-section" class="mt-8">
+  <!-- 改成直接跳轉，不帶onclick -->
+  <a href="collection.html">
+    <button>打開我的收集冊</button>
+  </a>
+
+  <div id="card-container" style="background-image: url('/static/cards/normal/讚1.jpeg');"></div>
+  <div id="idol-caption">你今天想抽到誰！</div>
+  <button id="summon-btn">✨ 點我召喚小卡 ✨</button>
+</div>
 
 <video id="webcam" autoplay playsinline width="640" height="480"></video>
 <canvas id="videoCanvas" width="640" height="480"></canvas>
@@ -137,10 +119,6 @@
     ]
   };
 
-  // 目前顯示類別卡片與索引
-  let currentCategory = 'normal';
-  let currentIndex = 0;
-
   // 顯示卡片函式
   function showCard(category, index) {
     const card = cardData[category][index];
@@ -151,61 +129,45 @@
     caption.innerText = card.caption;
   }
 
+  // 儲存抽到的卡片到 localStorage，不重複存
+  function saveCardToCollection(category, image) {
+    let collection = JSON.parse(localStorage.getItem('myCollection')) || [];
+    // 檢查是否已存在
+    if (!collection.some(c => c.category === category && c.image === image)) {
+      collection.push({ category, image });
+      localStorage.setItem('myCollection', JSON.stringify(collection));
+    }
+  }
+
   // 隨機抽卡
   function drawRandomCard(category) {
     const list = cardData[category];
     const index = Math.floor(Math.random() * list.length);
     showCard(category, index);
+
+    // 抽到的卡存進收藏
+    saveCardToCollection(category, list[index].image);
   }
+
   // 播放音效，依類別動態切換音檔路徑
   function playSound(category) {
     const audio = document.getElementById('sound');
     audio.pause();
     audio.currentTime = 0;
-    // 確保音效路徑正確，依你目錄結構調整
     audio.src = `/kpop_card_project/static/sounds/${category}.mp3`;
     audio.play().catch(e => console.warn('音效播放失敗:', e));
   }
 
-  // 打開收集冊（簡單示範）
-  function showCollection() {
-    const container = document.getElementById('collection-container');
-    container.style.display = container.style.display === 'none' ? 'flex' : 'none';
-    if (container.style.display === 'flex') {
-      container.innerHTML = '';
-      // 展示所有卡片縮圖
-      for (const category in cardData) {
-        cardData[category].forEach(card => {
-          const div = document.createElement('div');
-          div.className = 'card-thumb';
-          div.style.backgroundImage = `url('/kpop_card_project/static/cards/${category}/${card.image}')`;
-          div.title = card.caption;
-          div.onclick = () => {
-            showCard(category, cardData[category].indexOf(card));
-            playSound(category);
-          };
-          container.appendChild(div);
-        });
-      }
-    }
-  }
-
-  // 按鈕事件 - 換卡
+  // 按鈕事件 - 抽卡
   document.getElementById('summon-btn').addEventListener('click', () => {
-  // 隨機選擇類別
-  const categories = ['normal', 'rare', 'ultra_rare'];
-  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-  drawRandomCard(randomCategory);
+    const categories = ['normal', 'rare', 'ultra_rare'];
+    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+    drawRandomCard(randomCategory);
+    playSound(randomCategory);
+  });
 
-  // 播放對應音效（可以根據類別）
-  if (randomCategory === 'normal') {
-    playSound('normal.mp3');
-  } else if (randomCategory === 'rare') {
-    playSound('rare.mp3');
-  } else if (randomCategory === 'ultra_rare') {
-    playSound('ultra_rare.mp3');
-  }
-});
+  // 初始化時顯示預設卡片
+  showCard('normal', 0);
 
 
   // MediaPipe Hands 初始化
